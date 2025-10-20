@@ -5,9 +5,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.rmi.Naming;
-import remote.EstoqueServico;
 import java.util.List;
 import model.Produto;
+import remote.EstoqueServico;
 
 public class Menu extends JFrame {
 
@@ -35,8 +35,8 @@ public class Menu extends JFrame {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         painelBotoes.setBackground(new Color(240, 248, 255));
 
-        JButton btnAdicionar = criarBotao(" Adicionar Produto", new Color(76, 175, 80));
-        painelBotoes.add(btnAdicionar);
+        JButton btnExcluir = criarBotao("️ Excluir Produto", new Color(244, 67, 54));
+        painelBotoes.add(btnExcluir);
         add(painelBotoes, BorderLayout.SOUTH);
 
         modeloTabela = new DefaultTableModel(new String[]{
@@ -60,6 +60,10 @@ public class Menu extends JFrame {
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         add(scrollPane, BorderLayout.CENTER);
+
+        btnExcluir.addActionListener(e -> excluirProduto());
+
+        carregarProdutos();
     }
 
     private JButton criarBotao(String texto, Color cor) {
@@ -71,9 +75,6 @@ public class Menu extends JFrame {
         btn.setPreferredSize(new Dimension(180, 40));
         return btn;
     }
-    // Código igual ao original até a tabela...
-
-
 
     private void carregarProdutos() {
         modeloTabela.setRowCount(0);
@@ -96,6 +97,28 @@ public class Menu extends JFrame {
         }
     }
 
+    private void excluirProduto() {
+        int linha = tabela.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um produto na tabela.");
+            return;
+        }
+
+        int id = (int) modeloTabela.getValueAt(linha, 0);
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Tem certeza que deseja excluir o produto?", "Confirmação",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                api.excluirProduto(id);
+                carregarProdutos();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+            }
+        }
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Menu().setVisible(true));
