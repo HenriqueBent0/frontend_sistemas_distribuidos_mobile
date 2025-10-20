@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.util.List;
 import model.Produto;
 import remote.EstoqueServico;
+import model.Movimentacao;
 
 public class Menu extends JFrame {
 
@@ -215,6 +216,38 @@ private void abrirJanelaAdicionar() {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
+    }
+}
+
+
+private void abrirJanelaMovimentar() {
+    String idStr = JOptionPane.showInputDialog(this, "ID do Produto:");
+    if (idStr == null) return;
+
+    String[] opcoes = {"ENTRADA", "SAIDA"};
+    String tipo = (String) JOptionPane.showInputDialog(this,
+            "Tipo de movimentação:", "Movimentação",
+            JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
+
+    String qtdStr = JOptionPane.showInputDialog(this, "Quantidade:");
+    if (qtdStr == null) return;
+
+    try {
+        int id = Integer.parseInt(idStr);
+        int qtd = Integer.parseInt(qtdStr);
+        Movimentacao m = new Movimentacao(
+                id,
+                java.time.LocalDate.now(),
+                qtd,
+                Movimentacao.Tipo.valueOf(tipo)
+        );
+        String msg = api.registrarMovimentacao(m);
+        JOptionPane.showMessageDialog(this, msg);
+        carregarProdutos();
+    } catch (NumberFormatException nfe) {
+        JOptionPane.showMessageDialog(this, "Quantidade/ID inválidos.");
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
     }
 }
 
