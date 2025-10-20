@@ -6,6 +6,8 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.rmi.Naming;
 import remote.EstoqueServico;
+import java.util.List;
+import model.Produto;
 
 public class Menu extends JFrame {
 
@@ -69,6 +71,31 @@ public class Menu extends JFrame {
         btn.setPreferredSize(new Dimension(180, 40));
         return btn;
     }
+    // Código igual ao original até a tabela...
+
+
+
+    private void carregarProdutos() {
+        modeloTabela.setRowCount(0);
+        try {
+            List<Produto> lista = api.listarProdutos();
+            for (Produto p : lista) {
+                modeloTabela.addRow(new Object[]{
+                        p.getId(),
+                        p.getNome(),
+                        p.getPrecoUnitario(),
+                        p.getUnidade(),
+                        p.getQuantidade(),
+                        p.getQuantidadeMinima(),
+                        p.getQuantidadeMaxima(),
+                        p.getCategoria()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar produtos: " + e.getMessage());
+        }
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Menu().setVisible(true));
