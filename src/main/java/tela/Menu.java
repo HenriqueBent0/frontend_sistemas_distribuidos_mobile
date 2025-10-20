@@ -119,6 +119,63 @@ public class Menu extends JFrame {
             }
         }
     }
+// Igual ao anterior, com o método abaixo adicionado:
+private void editarProduto() {
+    int linha = tabela.getSelectedRow();
+    if (linha == -1) {
+        JOptionPane.showMessageDialog(this, "Selecione um produto na tabela.");
+        return;
+    }
+
+    int id = (int) modeloTabela.getValueAt(linha, 0);
+    String nomeAtual = (String) modeloTabela.getValueAt(linha, 1);
+    double precoAtual = (double) modeloTabela.getValueAt(linha, 2);
+    String unidadeAtual = (String) modeloTabela.getValueAt(linha, 3);
+    int qtdAtual = (int) modeloTabela.getValueAt(linha, 4);
+    int minAtual = (int) modeloTabela.getValueAt(linha, 5);
+    int maxAtual = (int) modeloTabela.getValueAt(linha, 6);
+    String categoriaAtual = (String) modeloTabela.getValueAt(linha, 7);
+
+    JTextField nome = new JTextField(nomeAtual);
+    JTextField preco = new JTextField(String.valueOf(precoAtual));
+    JTextField unidade = new JTextField(unidadeAtual);
+    JTextField qtd = new JTextField(String.valueOf(qtdAtual));
+    JTextField qtdMin = new JTextField(String.valueOf(minAtual));
+    JTextField qtdMax = new JTextField(String.valueOf(maxAtual));
+    JTextField categoria = new JTextField(categoriaAtual);
+
+    Object[] campos = {
+            "Nome:", nome,
+            "Preço:", preco,
+            "Unidade:", unidade,
+            "Quantidade:", qtd,
+            "Quantidade mínima:", qtdMin,
+            "Quantidade máxima:", qtdMax,
+            "Categoria:", categoria
+    };
+
+    int res = JOptionPane.showConfirmDialog(this, campos, "Editar Produto", JOptionPane.OK_CANCEL_OPTION);
+    if (res == JOptionPane.OK_OPTION) {
+        try {
+            Produto p = new Produto(
+                    id,
+                    nome.getText(),
+                    Double.parseDouble(preco.getText()),
+                    unidade.getText(),
+                    Integer.parseInt(qtd.getText()),
+                    Integer.parseInt(qtdMin.getText()),
+                    Integer.parseInt(qtdMax.getText()),
+                    categoria.getText()
+            );
+            api.editarProduto(p);
+            carregarProdutos();
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Verifique os campos numéricos.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+        }
+    }
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Menu().setVisible(true));
