@@ -176,6 +176,47 @@ private void editarProduto() {
         }
     }
 }
+private void abrirJanelaAdicionar() {
+    JTextField nome = new JTextField();
+    JTextField preco = new JTextField();
+    JTextField unidade = new JTextField();
+    JTextField qtd = new JTextField();
+    JTextField qtdMin = new JTextField();
+    JTextField qtdMax = new JTextField();
+    JTextField categoria = new JTextField();
+
+    Object[] campos = {
+            "Nome:", nome,
+            "Preço:", preco,
+            "Unidade:", unidade,
+            "Quantidade:", qtd,
+            "Quantidade mínima:", qtdMin,
+            "Quantidade máxima:", qtdMax,
+            "Categoria:", categoria
+    };
+
+    int res = JOptionPane.showConfirmDialog(this, campos, "Novo Produto", JOptionPane.OK_CANCEL_OPTION);
+    if (res == JOptionPane.OK_OPTION) {
+        try {
+            Produto p = new Produto(
+                    0,
+                    nome.getText(),
+                    Double.parseDouble(preco.getText()),
+                    unidade.getText(),
+                    Integer.parseInt(qtd.getText()),
+                    Integer.parseInt(qtdMin.getText()),
+                    Integer.parseInt(qtdMax.getText()),
+                    categoria.getText()
+            );
+            api.adicionarProduto(p);
+            carregarProdutos();
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Verifique os campos numéricos.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+        }
+    }
+}
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new Menu().setVisible(true));
