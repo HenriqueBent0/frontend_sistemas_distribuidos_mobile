@@ -27,6 +27,18 @@ public class TelaBalanco extends JFrame{
             dispose();
             return;
         }
+        
+        modeloTabela = new DefaultTableModel(new String[]{
+            "Produto", "Quantidade", "Preço unitário", "Valor Total"
+        }, 0) {
+            @Override public boolean isCellEditable(int row,int column) { return false; }
+        };
+        
+        tabela = new JTable(modeloTabela);
+        tabela.setFillsViewportHeight(true);
+        
+        JScrollPane scrollPane = new JScrollPane(tabela);
+        add(scrollPane, BorderLayout.CENTER);
     }
     
     public static void main(String[] args) {
