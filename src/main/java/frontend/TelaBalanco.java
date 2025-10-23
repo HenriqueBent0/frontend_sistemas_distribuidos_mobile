@@ -12,7 +12,7 @@ import remote.EstoqueServico;
 public class TelaBalanco extends JFrame{
     
     private EstoqueServicos api;
-    private Jtable tabela;
+    private JTable tabela;
     private DefaultTableModel modeloTabela;
     private JLabel lblTotalEstoque;
     
@@ -48,6 +48,32 @@ public class TelaBalanco extends JFrame{
         add(lblTotalEstoque, BorderLayout.SOUTH);
     }
     
+    private void carregarBalanco() {
+        modeloTabela.setRowCount(0);
+        double totalEstoque = 0;
+        
+        try {
+            List<Produto> lista = api.listarProdutos();
+            lista.sort((a, b) -> a.getNome().compareToIgnoreCase(b.getNome())); //ordem alfabética
+            
+            for (Produto p : lista) {
+                double valorTotal = p.getPrecoUnitario() * p.getQuantidade();
+                totalEstoque += valorTotal;
+                
+                modeloTabela.addRow(new Object[]{
+                    p.getNome(),
+                    p.getQuantidade(),
+                    String.format("R$ %.2f", getPrecoUnitario()),
+                    String.format("R$ %.2f", valorTotal)
+                });
+            }
+            
+            lblTotalEstoque.setText("Valor Total do Estoque: R$ " + String.format("%.2f", totalEstoque));
+            
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar balanço: " + e.getMessage());
+        }
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new TelaBalanco().setVisible(true));
     }
