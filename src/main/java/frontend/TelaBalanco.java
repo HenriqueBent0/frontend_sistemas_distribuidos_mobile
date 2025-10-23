@@ -10,6 +10,7 @@ import model.Produto;
 import remote.EstoqueServico;
 
 public class TelaBalanco extends JFrame{
+    
     private EstoqueServicos api;
     private Jtable tabela;
     private DefaultTableModel modeloTabela;
@@ -39,6 +40,12 @@ public class TelaBalanco extends JFrame{
         
         JScrollPane scrollPane = new JScrollPane(tabela);
         add(scrollPane, BorderLayout.CENTER);
+        
+        //Rodapé com valor total do estoque
+        lblTotalEstoque = new JLabel("Valor Total do Estoque: R$ 0,00");
+        lblTotalEstoque.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        lblTotalEstoque.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(lblTotalEstoque, BorderLayout.SOUTH);
     }
     
     public static void main(String[] args) {
