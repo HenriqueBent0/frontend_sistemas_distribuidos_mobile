@@ -46,6 +46,8 @@ public class TelaBalanco extends JFrame{
         lblTotalEstoque.setFont(new Font("Segoe UI", Font.BOLD, 15));
         lblTotalEstoque.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(lblTotalEstoque, BorderLayout.SOUTH);
+        
+        carregarBalanco();
     }
     
     private void carregarBalanco() {
