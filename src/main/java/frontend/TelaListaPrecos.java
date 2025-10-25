@@ -8,10 +8,11 @@ import java.util.List;
 import model.Produto;
 import remote.EstoqueServico;
 
-
 public class TelaListaPrecos extends JFrame {
 
     private EstoqueServico api;
+    private JTable tabela;
+    private DefaultTableModel modeloTabela;
 
     public TelaListaPrecos() {
         setTitle("Lista de Preços");
@@ -26,6 +27,20 @@ public class TelaListaPrecos extends JFrame {
             return;
         }
 
+        modeloTabela = new DefaultTableModel(new String[]{
+            "Nome", "Preço Unitário", "Unidade", "Categoria"
+        }, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tabela = new JTable(modeloTabela);
+        tabela.setFillsViewportHeight(true);
+
+        add(new JScrollPane(tabela), BorderLayout.CENTER);
+
     }
-    
+
 }
