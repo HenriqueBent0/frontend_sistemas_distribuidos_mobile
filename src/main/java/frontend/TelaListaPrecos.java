@@ -1,10 +1,14 @@
 
 package frontend;
 
-/**
- *
- * @author ianfu
- */
-public class TelaListaPrecos {
-    
-}
+
+public class TelaListaPrecos extends JFrame {
+
+
+    public TelaListaPrecos() {
+        setTitle("Lista de Preços");
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+
+
+    }
