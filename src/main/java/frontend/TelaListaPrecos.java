@@ -41,6 +41,29 @@ public class TelaListaPrecos extends JFrame {
 
         add(new JScrollPane(tabela), BorderLayout.CENTER);
 
+        carregarLista();
     }
 
+    private void carregarLista() {
+        modeloTabela.setRowCount(0);
+        try {
+            List<Produto> lista = api.listarProdutos();
+            lista.sort((a, b) -> a.getNome().compareToIgnoreCase(b.getNome())); // ordem alfabética
+
+            for (Produto p : lista) {
+                modeloTabela.addRow(new Object[]{
+                    p.getNome(),
+                    String.format("R$ %.2f", p.getPrecoUnitario()),
+                    p.getUnidade(),
+                    p.getCategoria()
+                });
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar lista de preços: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new TelaListaPrecos().setVisible(true));
+    }
 }
