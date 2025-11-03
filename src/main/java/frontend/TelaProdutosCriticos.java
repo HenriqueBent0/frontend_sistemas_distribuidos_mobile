@@ -62,3 +62,8 @@ public class TelaProdutosCriticos extends JFrame {
             JOptionPane.showMessageDialog(this, "Erro ao carregar produtos críticos: " + e.getMessage());
         }
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new TelaProdutosCriticos().setVisible(true));
+    }
+}
