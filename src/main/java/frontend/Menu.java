@@ -1,4 +1,4 @@
-package tela;
+package frontend;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -18,7 +18,7 @@ public class Menu extends JFrame {
 
     public Menu() {
         setTitle("📦 Sistema de Estoque");
-        setSize(1600, 500);
+        setSize(1800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -92,8 +92,7 @@ public class Menu extends JFrame {
         btnBalanco.addActionListener(e -> new TelaBalanco().setVisible(true));
         btnExcluir.addActionListener(e -> excluirProduto());
         btnEditar.addActionListener(e -> editarProduto());
-        btnProdutosCriticos.addActionListener(e -> new TelaProdutosCriticos().setVisible(true));
-        btnMaisMovimentados.addActionListener(e -> new TelaProdutosMaisMovimentados().setVisible(true));
+       
         // Duplo clique = editar
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

@@ -11,7 +11,7 @@ import remote.EstoqueServico;
 
 public class TelaBalanco extends JFrame{
     
-    private EstoqueServicos api;
+    private EstoqueServico api;
     private JTable tabela;
     private DefaultTableModel modeloTabela;
     private JLabel lblTotalEstoque;
@@ -65,7 +65,7 @@ public class TelaBalanco extends JFrame{
                 modeloTabela.addRow(new Object[]{
                     p.getNome(),
                     p.getQuantidade(),
-                    String.format("R$ %.2f", getPrecoUnitario()),
+                    String.format("R$ %.2f", p.getPrecoUnitario()),
                     String.format("R$ %.2f", valorTotal)
                 });
             }
