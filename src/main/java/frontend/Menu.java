@@ -93,6 +93,7 @@ public class Menu extends JFrame {
         btnExcluir.addActionListener(e -> excluirProduto());
         btnEditar.addActionListener(e -> editarProduto());
         btnProdutosCriticos.addActionListener(e -> new TelaProdutosCriticos().setVisible(true));
+        btnMaisMovimentados.addActionListener(e -> new TelaProdutosMaisMovimentados().setVisible(true));
         // Duplo clique = editar
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
