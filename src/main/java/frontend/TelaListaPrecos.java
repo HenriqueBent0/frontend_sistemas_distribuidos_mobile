@@ -8,6 +8,13 @@ import java.util.List;
 import model.Produto;
 import remote.EstoqueServico;
 
+/**
+ * TelaBalanco
+ *
+ * Exibe um balanço financeiro e físico do estoque. Mostra cada produto, sua
+ * quantidade, preço e total individual. Também calcula o valor total do
+ * estoque.
+ */
 public class TelaListaPrecos extends JFrame {
 
     private EstoqueServico api;

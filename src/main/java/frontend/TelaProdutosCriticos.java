@@ -8,6 +8,13 @@ import java.util.List;
 import model.Produto;
 import remote.EstoqueServico;
 
+/**
+ * TelaBalanco
+ *
+ * Exibe um balanço financeiro e físico do estoque. Mostra cada produto, sua
+ * quantidade, preço e total individual. Também calcula o valor total do
+ * estoque.
+ */
 public class TelaProdutosCriticos extends JFrame {
 
     private EstoqueServico api;
@@ -28,11 +35,11 @@ public class TelaProdutosCriticos extends JFrame {
         }
 
         modeloTabela = new DefaultTableModel(new String[]{
-                "Produto", "Quantidade Mínima", "Quantidade em Estoque"
+            "Produto", "Quantidade Mínima", "Quantidade em Estoque"
         }, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) { 
-                return false; 
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
         };
 
@@ -54,9 +61,9 @@ public class TelaProdutosCriticos extends JFrame {
             for (Produto p : lista) {
                 if (p.getQuantidade() < p.getQuantidadeMinima()) {
                     modeloTabela.addRow(new Object[]{
-                            p.getNome(),
-                            p.getQuantidadeMinima(),
-                            p.getQuantidade()
+                        p.getNome(),
+                        p.getQuantidadeMinima(),
+                        p.getQuantidade()
                     });
                 }
             }

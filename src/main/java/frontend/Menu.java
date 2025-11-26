@@ -10,6 +10,16 @@ import model.Movimentacao;
 import model.Produto;
 import remote.EstoqueServico;
 
+/**
+ * Classe Menu
+ *
+ * Tela principal do sistema de estoque. Exibe a lista de produtos, botões de
+ * ações e integra a interface com o servidor RMI.
+ *
+ * Funcionalidades: - Listar produtos - Adicionar produto - Editar produto -
+ * Excluir produto - Registrar movimentações - Acessar telas: preços, balanço,
+ * produtos críticos e mais movimentados
+ */
 public class Menu extends JFrame {
 
     private EstoqueServico api;
@@ -25,7 +35,8 @@ public class Menu extends JFrame {
         // ----- Look and Feel Nimbus -----
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         // ----- Conexão com RMI -----
         try {
@@ -48,7 +59,7 @@ public class Menu extends JFrame {
         JButton btnBalanco = criarBotao(" Balanço", new Color(0, 121, 107));
         JButton btnProdutosCriticos = criarBotao("⚠ Produtos Críticos", new Color(255, 87, 34));
         JButton btnMaisMovimentados = criarBotao("📊 Produtos Movimentados", new Color(63, 81, 181));
-        
+
         painelBotoes.add(btnMaisMovimentados);
         painelBotoes.add(btnProdutosCriticos);
         painelBotoes.add(btnBalanco);
@@ -61,10 +72,12 @@ public class Menu extends JFrame {
 
         // ----- Tabela -----
         modeloTabela = new DefaultTableModel(new String[]{
-                "ID", "Nome", "Preço", "Unidade", "Quantidade", "Mínimo", "Máximo", "Categoria"
+            "ID", "Nome", "Preço", "Unidade", "Quantidade", "Mínimo", "Máximo", "Categoria"
         }, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) { return false; }
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         tabela = new JTable(modeloTabela);
@@ -97,7 +110,9 @@ public class Menu extends JFrame {
         // Duplo clique = editar
         tabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (evt.getClickCount() == 2) btnEditar.doClick();
+                if (evt.getClickCount() == 2) {
+                    btnEditar.doClick();
+                }
             }
         });
 
@@ -105,7 +120,6 @@ public class Menu extends JFrame {
     }
 
     // ---------- Métodos auxiliares ----------
-
     private JButton criarBotao(String texto, Color cor) {
         JButton btn = new JButton(texto);
         btn.setFocusPainted(false);
@@ -123,14 +137,14 @@ public class Menu extends JFrame {
             List<Produto> lista = api.listarProdutos();
             for (Produto p : lista) {
                 modeloTabela.addRow(new Object[]{
-                        p.getId(),
-                        p.getNome(),
-                        p.getPrecoUnitario(),
-                        p.getUnidade(),
-                        p.getQuantidade(),
-                        p.getQuantidadeMinima(),
-                        p.getQuantidadeMaxima(),
-                        p.getCategoria()
+                    p.getId(),
+                    p.getNome(),
+                    p.getPrecoUnitario(),
+                    p.getUnidade(),
+                    p.getQuantidade(),
+                    p.getQuantidadeMinima(),
+                    p.getQuantidadeMaxima(),
+                    p.getCategoria()
                 });
             }
         } catch (Exception e) {
@@ -185,13 +199,13 @@ public class Menu extends JFrame {
         JTextField categoria = new JTextField(categoriaAtual);
 
         Object[] campos = {
-                "Nome:", nome,
-                "Preço:", preco,
-                "Unidade:", unidade,
-                "Quantidade:", qtd,
-                "Quantidade mínima:", qtdMin,
-                "Quantidade máxima:", qtdMax,
-                "Categoria:", categoria
+            "Nome:", nome,
+            "Preço:", preco,
+            "Unidade:", unidade,
+            "Quantidade:", qtd,
+            "Quantidade mínima:", qtdMin,
+            "Quantidade máxima:", qtdMax,
+            "Categoria:", categoria
         };
 
         int res = JOptionPane.showConfirmDialog(this, campos, "Editar Produto", JOptionPane.OK_CANCEL_OPTION);
@@ -227,13 +241,13 @@ public class Menu extends JFrame {
         JTextField categoria = new JTextField();
 
         Object[] campos = {
-                "Nome:", nome,
-                "Preço:", preco,
-                "Unidade:", unidade,
-                "Quantidade:", qtd,
-                "Quantidade mínima:", qtdMin,
-                "Quantidade máxima:", qtdMax,
-                "Categoria:", categoria
+            "Nome:", nome,
+            "Preço:", preco,
+            "Unidade:", unidade,
+            "Quantidade:", qtd,
+            "Quantidade mínima:", qtdMin,
+            "Quantidade máxima:", qtdMax,
+            "Categoria:", categoria
         };
 
         int res = JOptionPane.showConfirmDialog(this, campos, "Novo Produto", JOptionPane.OK_CANCEL_OPTION);
@@ -261,7 +275,9 @@ public class Menu extends JFrame {
 
     private void abrirJanelaMovimentar() {
         String idStr = JOptionPane.showInputDialog(this, "ID do Produto:");
-        if (idStr == null) return;
+        if (idStr == null) {
+            return;
+        }
 
         String[] opcoes = {"ENTRADA", "SAIDA"};
         String tipo = (String) JOptionPane.showInputDialog(this,
@@ -269,7 +285,9 @@ public class Menu extends JFrame {
                 JOptionPane.QUESTION_MESSAGE, null, opcoes, opcoes[0]);
 
         String qtdStr = JOptionPane.showInputDialog(this, "Quantidade:");
-        if (qtdStr == null) return;
+        if (qtdStr == null) {
+            return;
+        }
 
         try {
             int id = Integer.parseInt(idStr);

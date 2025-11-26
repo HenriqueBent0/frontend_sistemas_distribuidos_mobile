@@ -10,6 +10,13 @@ import java.util.List;
 import model.Produto;
 import remote.EstoqueServico;
 
+/**
+ * TelaBalanco
+ *
+ * Exibe um balanço financeiro e físico do estoque. Mostra cada produto, sua
+ * quantidade, preço e total individual. Também calcula o valor total do
+ * estoque.
+ */
 public class TelaProdutosMaisMovimentados extends JFrame {
 
     private EstoqueServico api;
@@ -30,9 +37,12 @@ public class TelaProdutosMaisMovimentados extends JFrame {
         }
 
         modeloTabela = new DefaultTableModel(new String[]{
-                "Tipo", "Produto", "Quantidade Total"
+            "Tipo", "Produto", "Quantidade Total"
         }, 0) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         tabela = new JTable(modeloTabela);
@@ -47,18 +57,18 @@ public class TelaProdutosMaisMovimentados extends JFrame {
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:estoque.db")) {
             try (Statement st = conn.createStatement()) {
-                st.executeUpdate("CREATE TABLE IF NOT EXISTS movimentacao (" +
-                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "idProduto INTEGER," +
-                        "data TEXT," +
-                        "quantidade INTEGER," +
-                        "tipo TEXT)");
+                st.executeUpdate("CREATE TABLE IF NOT EXISTS movimentacao ("
+                        + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + "idProduto INTEGER,"
+                        + "data TEXT,"
+                        + "quantidade INTEGER,"
+                        + "tipo TEXT)");
             }
 
-            String sqlMaisEntrada = "SELECT idProduto, SUM(quantidade) as total " +
-                    "FROM movimentacao WHERE tipo='ENTRADA' GROUP BY idProduto ORDER BY total DESC LIMIT 1";
-            String sqlMaisSaida = "SELECT idProduto, SUM(quantidade) as total " +
-                    "FROM movimentacao WHERE tipo='SAIDA' GROUP BY idProduto ORDER BY total DESC LIMIT 1";
+            String sqlMaisEntrada = "SELECT idProduto, SUM(quantidade) as total "
+                    + "FROM movimentacao WHERE tipo='ENTRADA' GROUP BY idProduto ORDER BY total DESC LIMIT 1";
+            String sqlMaisSaida = "SELECT idProduto, SUM(quantidade) as total "
+                    + "FROM movimentacao WHERE tipo='SAIDA' GROUP BY idProduto ORDER BY total DESC LIMIT 1";
 
             List<Produto> produtos = api.listarProdutos();
 
@@ -67,7 +77,9 @@ public class TelaProdutosMaisMovimentados extends JFrame {
                     int idProd = rsEntrada.getInt("idProduto");
                     int total = rsEntrada.getInt("total");
                     Produto p = produtos.stream().filter(prod -> prod.getId() == idProd).findFirst().orElse(null);
-                    if (p != null) modeloTabela.addRow(new Object[]{"Mais Entradas", p.getNome(), total});
+                    if (p != null) {
+                        modeloTabela.addRow(new Object[]{"Mais Entradas", p.getNome(), total});
+                    }
                 }
             }
 
@@ -76,7 +88,9 @@ public class TelaProdutosMaisMovimentados extends JFrame {
                     int idProd = rsSaida.getInt("idProduto");
                     int total = rsSaida.getInt("total");
                     Produto p = produtos.stream().filter(prod -> prod.getId() == idProd).findFirst().orElse(null);
-                    if (p != null) modeloTabela.addRow(new Object[]{"Mais Saídas", p.getNome(), total});
+                    if (p != null) {
+                        modeloTabela.addRow(new Object[]{"Mais Saídas", p.getNome(), total});
+                    }
                 }
             }
 
